@@ -17,7 +17,6 @@ What features should it have?
 
 Such a thing exists.
 
-[![Build Status](https://travis-ci.org/bglopez/cheat.sh.svg?branch=master)](https://travis-ci.org/bglopez/cheat.sh)
 
 ## Features
 
@@ -30,7 +29,7 @@ Such a thing exists.
 * Ultrafast, returns answers within 100 ms, as a rule.
 * Has a convenient command line client, `cht.sh`, that is very advantageous and helpful, though not mandatory.
 * Can be used directly from code editors, without opening a browser and not switching your mental context.
-* Supports a special stealth mode where it can be used fully invisibly without ever touching a key and and making sounds.
+* Supports a special stealth mode where it can be used fully invisibly without ever touching a key and making sounds.
 
 <p align="center">
   <img src='https://cheat.sh/files/demo-curl.gif'/>
@@ -52,6 +51,8 @@ Such a thing exists.
   * [Emacs](#emacs)
   * [Visual Studio Code](#visual-studio-code)
   * [Sublime](#sublime)
+  * [IntelliJ IDEA](#intellij-idea)
+  * [QT Creator](#qtcreator)
 * [Special pages](#special-pages)
 * [Search](#search)
 * [Programming languages cheat sheets](#programming-languages-cheat-sheets)
@@ -150,9 +151,9 @@ so they can be pasted into a program in this language directly. Text comments, i
 ```
 
 If you don't need text comments in the answer, you can eliminate them
-using a special option `?Q`:
+using a special option `\?Q`:
 ```lua
-    $ curl cht.sh/lua/table+keys?Q
+    $ curl cht.sh/lua/table+keys\?Q
     local keyset={}
     local n=0
 
@@ -162,15 +163,15 @@ using a special option `?Q`:
     end
 ```
 
-And if you don't need syntax highlighting, switch it off using `?T`.
+And if you don't need syntax highlighting, switch it off using `\?T`.
 You can combine the options together:
 
 ```
-    curl cht.sh/go/reverse+a+list?Q
-    curl cht.sh/python/random+list+elements?Q
-    curl cht.sh/js/parse+json?Q
-    curl cht.sh/lua/merge+tables?QT
-    curl cht.sh/clojure/variadic+function?QT
+    curl cht.sh/go/reverse+a+list\?Q
+    curl cht.sh/python/random+list+elements\?Q
+    curl cht.sh/js/parse+json\?Q
+    curl cht.sh/lua/merge+tables\?QT
+    curl cht.sh/clojure/variadic+function\?QT
 ```
 
 Full list of all options described below and in `/:help`.
@@ -202,9 +203,18 @@ has several useful features compared to querying the service directly with `curl
 To install the client:
 
 ```
+    mkdir -p ~/bin/
     curl https://cht.sh/:cht.sh > ~/bin/cht.sh
     chmod +x ~/bin/cht.sh
 ```
+
+or to install it globally (for all users):
+
+```
+    curl https://cht.sh/:cht.sh | sudo tee /usr/local/bin/cht.sh
+    chmod +x /usr/local/bin/cht.sh
+```
+
 Note: The package "rlwrap" is a required dependency to run in shell mode. Install this using `sudo apt install rlwrap`
 
 ### Client usage
@@ -278,14 +288,14 @@ Type `help` for other internal `cht.sh` commands.
 	update  - self update (only if the scriptfile is writeable)
 	version - show current cht.sh version
 	/:help  - service help
-	QUERY   - space ceparated query staring (examples are below)
+	QUERY   - space separated query staring (examples are below)
 				  cht.sh> python zip list
 				  cht.sh/python> zip list
 				  cht.sh/go> /python zip list
 ```
 
 The `cht.sh` client has its configuration file which is located at `~/.cht.sh/cht.sh.conf`
-(location of the file can be overriden by the environment variable `CHTSH_CONF`).
+(location of the file can be overridden by the environment variable `CHTSH_CONF`).
 Use it to specify query options that you would use with each query.
 For example, to switch syntax highlighting off create the file with the following
 content:
@@ -416,12 +426,36 @@ because you know what happens when you do.
 
 ![when you lie in your interview](http://cheat.sh/files/when-you-lie-katze.png)
 
+### Windows command line client
+
+You can access cheat.sh from Windows command line too.
+
+Use cheat.sh command line client for that: [`cht.exe`](https://github.com/tpanj/cht.exe).
+It supports:
+
+* output colorization;
+* command line options;
+* its own configuration file.
+
+You can also use [`scoop`](https://github.com/lukesampson/scoop) command-line installer for Windows to get it:
+```batch
+scoop install cht
+```
+
 ## Self-Hosting
 
 ### Docker
 
-Currently the easiest way to get a self-hosted instance running is by using the docker-compose.yml file provided in the extra/docker folder.
-This pulls down the latest image with baked in cheatsheets and starts the app and a Redis instance to back it, making the service available on port 8002 of the local host. This is currently an early implementation and should probably not be used for anything outside of internal/dev/personal use right now.
+Currently, the easiest way to get a self-hosted instance running is by using
+the `docker-compose.yml` file.
+
+    docker-compose up
+
+This builds and runs the image with baked in cheatsheets and starts the app
+and a Redis instance to back it, making the service available at
+http://localhost:8002 This is currently an early implementation and should
+probably not be used for anything outside of internal/dev/personal use right
+now.
 
 ## Editors integration
 
@@ -452,17 +486,17 @@ and press `<leader>KE`: explanation for the warning will be opened in a new buff
 
 Features supported by cheat.sh plugins for different editors:
 
-|Feature            |Emacs|Sublime|Vim|VSCode|
-|-------------------|-----|-------|---|------|
-|Command queries    |✓    |✓      |✓  |✓     |
-|Queries from buffer|     |       |✓  |✓     |
-|Toggle comments    |     |       |✓  |      |
-|Prev/next answer   |     |       |✓  |      |
-|Multiple answers   |     |✓      |   |      |
-|Warnings as queries|     |       |✓  |      |
-|Queries history    |     |       |✓  |      |
-|Session id         |     |       |✓  |      |
-|Configurable server|✓    |       |✓  |✓     |
+|Feature            |Emacs|Sublime|Vim|VSCode|IDEA|QtCreator|
+|-------------------|-----|-------|---|------|----|---------|
+|Command queries    |✓    |✓      |✓  |✓     |✓   |✓        |
+|Queries from buffer|     |       |✓  |✓     |    |✓        |
+|Toggle comments    |     |       |✓  |✓     |✓   |✓        |
+|Prev/next answer   |     |       |✓  |✓     |✓   |✓        |
+|Multiple answers   |     |✓      |   |      |✓   |         |
+|Warnings as queries|     |       |✓  |      |    |         |
+|Queries history    |     |       |✓  |✓     |    |         |
+|Session id         |     |       |✓  |      |    |         |
+|Configurable server|✓    |       |✓  |✓     |    |✓        |
 
 ### Vim
 
@@ -495,7 +529,7 @@ In this example, several Vim plugins are used:
 * [scrooloose/syntastic](https://github.com/vim-syntastic/syntastic) — Syntax checking plugin
 * [cheat.sh-vim](https://github.com/dbeniamine/cheat.sh-vim) — Vim support
 
-Syntastic shows warnings and errors (found by code analysys tools: `jshint`, `merlin`, `pylint`, `shellcheckt etc.),
+Syntastic shows warnings and errors (found by code analysis tools: `jshint`, `merlin`, `pylint`, `shellcheckt etc.),
 and `cheat.sh-vim` shows you explanations for the errors and warnings
 and answers on programming languages queries written in the editor.
 
@@ -552,6 +586,40 @@ Usage:
 
 *(GIF courtesy: Gaurav Kukreja, @gauravk-in)*
 
+### IntelliJ IDEA 
+
+* [idea-cheatsh-plugin](https://github.com/szymonprz/idea-cheatsh-plugin)
+* Install from [idea plugins marketplace](https://plugins.jetbrains.com/plugin/11942-cheat-sh-code-snippets) 
+
+Usage: 
+
+1. Write query string
+2. Select the query string
+3. Press keyboard shortcut <kbd>Alt</kbd> + <kbd>C</kbd> , <kbd>S</kbd> to replace the selected query string by the answer
+
+[![idea-cheatsh-plugin](https://cheat.sh/files/idea-demo.gif)](https://github.com/szymonprz/idea-cheatsh-plugin)
+
+*(GIF courtesy: Szymon Przebierowski, @szymonprz)*
+
+### QtCreator
+
+* [cheatsh-qtcreator](https://github.com/pozemka/cheatsh-qtcreator)
+
+Current features:
+
+*    search word under cursor
+*    search selected
+*    query search
+*    disable comments
+*    paste answer (?TQ version)
+*    custom server URL
+*    custom search context (default is cpp)
+*    hotkeys and menu
+
+[![cheatsh-qtcreator](https://user-images.githubusercontent.com/1259724/73876361-ecce5d00-4867-11ea-9f75-c5b127a9739c.gif)](https://github.com/pozemka/cheatsh-qtcreator)
+
+*(GIF courtesy: Pozemka, @pozemka)*
+
 ## Special pages
 
 There are several special pages that are not cheat sheets.
@@ -589,6 +657,7 @@ Other pages:
     :post               how to post new cheat sheet
     :styles             list of color styles
     :styles-demo        show color styles usage examples
+    :random             fetches a random page (can be used in a subsection too: /go/:random)
 ```
 
 ## Search
@@ -657,7 +726,7 @@ Some languages has the one-liners-cheat sheet, `1line`:
 
 ![cheat.sh usage](http://cheat.sh/files/supported-languages-c++.png)
 
-At the moment, cheat.sh covers the 55 following programming languages (alphabetically sorted):
+At the moment, cheat.sh covers the 58 following programming languages (alphabetically sorted):
 
 |Prefix     |Language  |Basics|One-liners|Weirdness|StackOverflow|
 |-----------|----------|------|----------|---------|-------------|
@@ -694,10 +763,13 @@ At the moment, cheat.sh covers the 55 following programming languages (alphabeti
 |`js/`      |JavaScript|✓     |✓         |✓        |✓            |
 |`julia/`   |Julia     |✓     |          |         |✓            |
 |`kotlin/`  |Kotlin    |✓     |          |         |✓            |
+|`latex/`   |LaTeX     |✓     |          |         |✓            |
 |`lisp/`    |Lisp      |✓     |          |         |✓            |
 |`lua/`     |Lua       |✓     |          |         |✓            |
 |`matlab/`  |MATLAB    |✓     |          |         |✓            |
+|`nim/`     |Nim       |✓     |          |         |✓            |
 |`ocaml/`   |OCaml     |✓     |          |         |✓            |
+|`octave/`  |Octave    |✓     |          |         |✓            |
 |`perl/`    |Perl      |✓     |✓         |         |✓            |
 |`perl6/`   |Perl 6    |✓     |✓         |         |✓            |
 |`php/`     |PHP       |✓     |          |         |✓            |
@@ -718,6 +790,16 @@ At the moment, cheat.sh covers the 55 following programming languages (alphabeti
 |`vb/`      |VisualBasic|✓    |          |         |✓            |
 |`vbnet/`   |VB.Net    |✓     |          |         |✓            |
 
+And several other topics, that are though related to programming,
+are not programming languages:
+
+|Prefix     |Topic     |Basics|StackOverflow|
+|-----------|----------|------|-------------|
+|`cmake/`   |CMake     |✓     |✓            |
+|`django/`  |Django    |      |✓            |
+|`flask/`   |Flask     |      |✓            |
+|`git/`     |Git       |✓     |✓            |
+
 ## Cheat sheets sources
 
 Instead of creating yet another mediocre cheat sheet repository,
@@ -733,12 +815,12 @@ all over the world
 
 |Cheat sheets           |Repository                                            | Users | Creation Date |
 |-----------------------|------------------------------------------------------|------------|---------------|
-|UNIX/Linux, programming|[cheat.sheets](https://github.com/chubin/cheat.sheets)| 25/139       | May 1, 2017   |
-|UNIX/Linux commands    |[tldr-pages/tldr](https://github.com/tldr-pages/tldr) | 580/18413  | Dec 8, 2013   |
-|UNIX/Linux commands    |[chrisallenlane/cheat](https://github.com/chrisallenlane/cheat)|111/4421|Jul 28, 2013|
-|Programming languages  |[adambard/learnxinyminutes-docs](https://github.com/adambard/learnxinyminutes-docs)|1125/5535|Jun 23, 2013|
-|Go                     |[a8m/go-lang-cheat-sheet](https://github.com/a8m/go-lang-cheat-sheet)|30/3389|Feb 9, 2014|
-|Perl                   |[pkrumnis/perl1line.txt](https://github.com/pkrumins/perl1line.txt)|5/173|Nov 4, 2011|
+|UNIX/Linux, programming|[cheat.sheets](https://github.com/chubin/cheat.sheets)| 38/223       | May 1, 2017   |
+|UNIX/Linux commands    |[tldr-pages/tldr](https://github.com/tldr-pages/tldr) | 760/23158  | Dec 8, 2013   |
+|UNIX/Linux commands    |[chrisallenlane/cheat](https://github.com/chrisallenlane/cheat)|131/5240|Jul 28, 2013|
+|Programming languages  |[adambard/learnxinyminutes-docs](https://github.com/adambard/learnxinyminutes-docs)|1246/6748|Jun 23, 2013|
+|Go                     |[a8m/go-lang-cheat-sheet](https://github.com/a8m/go-lang-cheat-sheet)|31/4039|Feb 9, 2014|
+|Perl                   |[pkrumnis/perl1line.txt](https://github.com/pkrumins/perl1line.txt)|5/190|Nov 4, 2011|
 |Programming languages  |[StackOverflow](https://stackoverflow.com)|9M |Sep 15, 2008|
 
 Pie diagram reflecting cheat sheets sources distribution (by number of cheat sheets on cheat.sh originating from a repository):
@@ -756,7 +838,7 @@ of the repository, which belongs the current cheat sheet.
 
 You can edit the cheat sheet directly in your browser (you need a github account for it).
 There is an edit button in the top right corner. If you click on it, an editor will be open.
-There you will change the cheat sheet (under the hood: the upstrem repository is forked, your changes are
+There you will change the cheat sheet (under the hood: the upstream repository is forked, your changes are
 committed in the forked repository, a pull request to the upstream repository owner is sent).
 
 ![cheat.sh cheat sheets repositories](http://cheat.sh/files/edit-cheat-sheet.png)
